@@ -39,6 +39,12 @@ OPTIONS
 	For a more complete list of ways to spell object names, see
 	"SPECIFYING REVISIONS" section in linkgit:gitrevisions[7].
 
+--follow-symlinks::
+	Follow symlinks inside the repository when requesting objects
+	in extended revision syntax of the form tree-ish:path-in-tree.
+	Instead of output about the link itself, provide output about
+	the linked-to object.
+
 include::pretty-options.txt[]
 
 
