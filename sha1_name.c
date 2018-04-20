@@ -1536,7 +1536,7 @@ static void diagnose_invalid_index_path(int stage,
 			die("Path '%s' is in the index, but not at stage %d.\n"
 			    "Did you mean ':%d:%s'?",
 			    filename, stage,
-			    ce_stage(ce), filename);
+		    ce_stage(ce), filename);
 	}
 
 	/* Confusion between relative and absolute filenames? */
@@ -1692,10 +1692,14 @@ static int get_oid_with_context_1(const char *name,
 				ret = get_tree_entry(&tree_oid, filename, oid,
 						     &oc->mode);
 				if (ret && only_to_die) {
-					diagnose_invalid_oid_path(prefix,
+                                   if (get_tree_entry_follow_symlinks(tree_oid.hash,filename, oid->hash, &oc->symlink_path,  &oc->mode) == 0) {
+                                          die("Path '%s' contains symlinks, try '--follow-symlinks'", filename);
+                                       } else {
+                                         diagnose_invalid_oid_path(prefix,
 								   filename,
 								   &tree_oid,
 								   name, len);
+                                       }
 				}
 			}
 			hashcpy(oc->tree, tree_oid.hash);
